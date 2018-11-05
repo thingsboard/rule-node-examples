@@ -52,7 +52,6 @@ public class TbCalculateSumNode implements TbNode {
         this.config = TbNodeUtils.convert(configuration, TbCalculateSumConfiguration.class);
         inputKey = config.getInputKey();
         outputKey = config.getOutputKey();
-
     }
 
     @Override
