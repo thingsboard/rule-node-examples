@@ -20,14 +20,14 @@ import org.thingsboard.rule.engine.api.NodeConfiguration;
 
 
 @Data
-public class TbGetSumNodeConfiguration implements NodeConfiguration<TbGetSumNodeConfiguration> {
+public class TbCalculateSumConfiguration implements NodeConfiguration<TbCalculateSumConfiguration> {
 
     private String inputKey;
     private String outputKey;
 
     @Override
-    public TbGetSumNodeConfiguration defaultConfiguration() {
-        TbGetSumNodeConfiguration configuration = new TbGetSumNodeConfiguration();
+    public TbCalculateSumConfiguration defaultConfiguration() {
+        TbCalculateSumConfiguration configuration = new TbCalculateSumConfiguration();
         configuration.setInputKey("temperature");
         configuration.setOutputKey("TemperatureSum");
         return configuration;

@@ -15,10 +15,8 @@
  */
 package org.thingsboard.rule.engine.node.transform;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import lombok.extern.slf4j.Slf4j;
 import org.thingsboard.rule.engine.api.*;
 import org.thingsboard.rule.engine.api.util.TbNodeUtils;
@@ -35,23 +33,23 @@ import static org.thingsboard.rule.engine.api.TbRelationTypes.SUCCESS;
 @Slf4j
 @RuleNode(
         type = ComponentType.TRANSFORMATION,
-        name = "get sum",
-        configClazz = TbGetSumNodeConfiguration.class,
+        name = "calculate sum",
+        configClazz = TbCalculateSumConfiguration.class,
         nodeDescription = "Calculates Sum of the telemetry data, which fields begin with the specified prefix. ",
         nodeDetails = "If fields in Message payload start with the <code>Input Key</code>, the Sum of these fields is added to the new Message payload.",
         uiResources = {"static/rulenode/custom-nodes-config.js"},
         configDirective = "tbTransformationNodeSumConfig")
-public class TbGetSumNode implements TbNode {
+public class TbCalculateSumNode implements TbNode {
 
     private static final ObjectMapper mapper = new ObjectMapper();
 
-    private TbGetSumNodeConfiguration config;
+    private TbCalculateSumConfiguration config;
     private String inputKey;
     private String outputKey;
 
     @Override
     public void init(TbContext ctx, TbNodeConfiguration configuration) throws TbNodeException {
-        this.config = TbNodeUtils.convert(configuration, TbGetSumNodeConfiguration.class);
+        this.config = TbNodeUtils.convert(configuration, TbCalculateSumConfiguration.class);
         inputKey = config.getInputKey();
         outputKey = config.getOutputKey();
 
