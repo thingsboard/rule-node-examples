@@ -25,6 +25,8 @@ import org.thingsboard.server.common.msg.TbMsg;
 import java.io.IOException;
 import java.util.concurrent.ExecutionException;
 
+import static org.thingsboard.rule.engine.api.TbRelationTypes.FAILURE;
+
 
 @Slf4j
 @RuleNode(
@@ -36,7 +38,7 @@ import java.util.concurrent.ExecutionException;
         nodeDetails = "If the selected key  exists - send Message via <b>True</b> chain, otherwise <b>False</b> chain is used.",
         uiResources = {"static/rulenode/custom-nodes-config.js"},
         configDirective = "tbFilterNodeCheckKeyConfig")
-public class    TbKeyFilterNode implements TbNode {
+public class TbKeyFilterNode implements TbNode {
 
     private static final ObjectMapper mapper = new ObjectMapper();
 
@@ -53,9 +55,9 @@ public class    TbKeyFilterNode implements TbNode {
     @Override
     public void onMsg(TbContext ctx, TbMsg msg) throws ExecutionException, InterruptedException, TbNodeException {
         try {
-            ctx.tellNext(msg , mapper.readTree(msg.getData()).has(key) ? "True" : "False");
+            ctx.tellNext(msg, mapper.readTree(msg.getData()).has(key) ? "True" : "False");
         } catch (IOException e) {
-            ctx.tellFailure(msg , e);
+            ctx.tellFailure(msg, e);
         }
     }
 

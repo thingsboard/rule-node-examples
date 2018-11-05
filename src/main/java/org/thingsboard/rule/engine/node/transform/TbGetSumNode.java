@@ -71,19 +71,18 @@ public class TbGetSumNode implements TbNode {
                     sum += jsonNode.get(field).asDouble();
                 }
             }
-                if (hasRecords) {
-                    ObjectNode outNode = mapper.createObjectNode().put(outputKey, sum);
-                    String data = mapper.writeValueAsString(outNode);
-                    TbMsg newMsg = ctx.newMsg(msg.getType(), msg.getOriginator(), msg.getMetaData(), data);
-                    ctx.tellNext(newMsg, SUCCESS);
-                } else {
-                    ctx.tellNext(msg, FAILURE, new Exception("Message doesn't contains the key: " + inputKey));
-                }
-            }catch (IOException e){
-                ctx.tellFailure(msg , e);
+            if (hasRecords) {
+                TbMsg newMsg = ctx.newMsg(msg.getType(), msg.getOriginator(), msg.getMetaData(), mapper.writeValueAsString(mapper.createObjectNode().put(outputKey, sum)));
+                ctx.tellNext(newMsg, SUCCESS);
+            } else {
+                ctx.tellNext(msg, FAILURE, new Exception("Message doesn't contains the key: " + inputKey));
             }
+        } catch (IOException e) {
+            ctx.tellFailure(msg, e);
+        }
     }
 
     @Override
-    public void destroy() {}
+    public void destroy() {
+    }
 }
