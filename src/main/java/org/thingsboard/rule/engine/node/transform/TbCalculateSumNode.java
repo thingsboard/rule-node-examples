@@ -34,7 +34,7 @@ import static org.thingsboard.rule.engine.api.TbRelationTypes.SUCCESS;
 @RuleNode(
         type = ComponentType.TRANSFORMATION,
         name = "calculate sum",
-        configClazz = TbCalculateSumConfiguration.class,
+        configClazz = TbCalculateSumNodeConfiguration.class,
         nodeDescription = "Calculates Sum of the telemetry data, which fields begin with the specified prefix. ",
         nodeDetails = "If fields in Message payload start with the <code>Input Key</code>, the Sum of these fields is added to the new Message payload.",
         uiResources = {"static/rulenode/custom-nodes-config.js"},
@@ -43,13 +43,13 @@ public class TbCalculateSumNode implements TbNode {
 
     private static final ObjectMapper mapper = new ObjectMapper();
 
-    private TbCalculateSumConfiguration config;
+    private TbCalculateSumNodeConfiguration config;
     private String inputKey;
     private String outputKey;
 
     @Override
     public void init(TbContext ctx, TbNodeConfiguration configuration) throws TbNodeException {
-        this.config = TbNodeUtils.convert(configuration, TbCalculateSumConfiguration.class);
+        this.config = TbNodeUtils.convert(configuration, TbCalculateSumNodeConfiguration.class);
         inputKey = config.getInputKey();
         outputKey = config.getOutputKey();
     }

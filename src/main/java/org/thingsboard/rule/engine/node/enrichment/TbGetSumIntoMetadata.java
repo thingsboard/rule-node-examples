@@ -48,7 +48,6 @@ public class TbGetSumIntoMetadata implements TbNode {
     private String inputKey;
     private String outputKey;
 
-
     @Override
     public void init(TbContext ctx, TbNodeConfiguration configuration) throws TbNodeException {
         this.config = TbNodeUtils.convert(configuration, TbGetSumIntoMetadataConfiguration.class);
