@@ -32,7 +32,7 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <main.dir>${basedir}</main.dir>
-        <tb.version>2.1.1-SNAPSHOT</tb.version>
+        <tb.version>2.4.1-SNAPSHOT</tb.version>
         <lombok.version>1.16.18</lombok.version>
         <guava.version>21.0</guava.version>
     </properties>
@@ -154,8 +154,17 @@
                         </execution>
                     </executions>
                 </plugin>
-
         </plugins>
     </build>
+
+    <repositories>
+        <repository>
+            <id>thingsboard-repo</id>
+            <url>https://repo.thingsboard.io/artifactory/libs-release-public</url>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+        </repository>
+    </repositories>
 
 </project>
