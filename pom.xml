@@ -32,7 +32,7 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <main.dir>${basedir}</main.dir>
-        <tb.version>2.1.1-SNAPSHOT</tb.version>
+        <tb.version>2.4.1</tb.version>
         <lombok.version>1.16.18</lombok.version>
         <guava.version>21.0</guava.version>
     </properties>
@@ -51,8 +51,14 @@
             <version>${tb.version}</version>
         </dependency>
         <dependency>
-            <groupId>org.thingsboard</groupId>
-            <artifactId>dao</artifactId>
+            <groupId>org.thingsboard.common</groupId>
+            <artifactId>util</artifactId>
+            <scope>provided</scope>
+            <version>${tb.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.thingsboard.common</groupId>
+            <artifactId>dao-api</artifactId>
             <scope>provided</scope>
             <version>${tb.version}</version>
         </dependency>
@@ -108,54 +114,64 @@
                     </execution>
                 </executions>
             </plugin>
-                <plugin>
-                    <groupId>com.mycila</groupId>
-                    <artifactId>license-maven-plugin</artifactId>
-                    <version>3.0</version>
-                    <configuration>
-                        <header>${main.dir}/license-header-template.txt</header>
-                        <properties>
-                            <owner>The Thingsboard Authors</owner>
-                        </properties>
-                        <excludes>
-                            <exclude>**/.env</exclude>
-                            <exclude>**/.eslintrc</exclude>
-                            <exclude>**/.babelrc</exclude>
-                            <exclude>**/.jshintrc</exclude>
-                            <exclude>**/.gradle/**</exclude>
-                            <exclude>**/nightwatch</exclude>
-                            <exclude>**/README</exclude>
-                            <exclude>**/LICENSE</exclude>
-                            <exclude>**/banner.txt</exclude>
-                            <exclude>node_modules/**</exclude>
-                            <exclude>**/*.properties</exclude>
-                            <exclude>src/test/resources/**</exclude>
-                            <exclude>src/vendor/**</exclude>
-                            <exclude>src/font/**</exclude>
-                            <exclude>src/sh/**</exclude>
-                            <exclude>src/main/scripts/control/**</exclude>
-                            <exclude>src/main/scripts/windows/**</exclude>
-                            <exclude>src/main/resources/public/static/rulenode/**</exclude>
-                        </excludes>
-                        <mapping>
-                            <proto>JAVADOC_STYLE</proto>
-                            <cql>DOUBLEDASHES_STYLE</cql>
-                            <scss>JAVADOC_STYLE</scss>
-                            <jsx>SLASHSTAR_STYLE</jsx>
-                            <conf>SCRIPT_STYLE</conf>
-                            <gradle>JAVADOC_STYLE</gradle>
-                        </mapping>
-                    </configuration>
-                    <executions>
-                        <execution>
-                            <goals>
-                                <goal>check</goal>
-                            </goals>
-                        </execution>
-                    </executions>
-                </plugin>
+            <plugin>
+                <groupId>com.mycila</groupId>
+                <artifactId>license-maven-plugin</artifactId>
+                <version>3.0</version>
+                <configuration>
+                    <header>${main.dir}/license-header-template.txt</header>
+                    <properties>
+                        <owner>The Thingsboard Authors</owner>
+                    </properties>
+                    <excludes>
+                        <exclude>**/.env</exclude>
+                        <exclude>**/.eslintrc</exclude>
+                        <exclude>**/.babelrc</exclude>
+                        <exclude>**/.jshintrc</exclude>
+                        <exclude>**/.gradle/**</exclude>
+                        <exclude>**/nightwatch</exclude>
+                        <exclude>**/README</exclude>
+                        <exclude>**/LICENSE</exclude>
+                        <exclude>**/banner.txt</exclude>
+                        <exclude>node_modules/**</exclude>
+                        <exclude>**/*.properties</exclude>
+                        <exclude>src/test/resources/**</exclude>
+                        <exclude>src/vendor/**</exclude>
+                        <exclude>src/font/**</exclude>
+                        <exclude>src/sh/**</exclude>
+                        <exclude>src/main/scripts/control/**</exclude>
+                        <exclude>src/main/scripts/windows/**</exclude>
+                        <exclude>src/main/resources/public/static/rulenode/**</exclude>
+                    </excludes>
+                    <mapping>
+                        <proto>JAVADOC_STYLE</proto>
+                        <cql>DOUBLEDASHES_STYLE</cql>
+                        <scss>JAVADOC_STYLE</scss>
+                        <jsx>SLASHSTAR_STYLE</jsx>
+                        <conf>SCRIPT_STYLE</conf>
+                        <gradle>JAVADOC_STYLE</gradle>
+                    </mapping>
+                </configuration>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>check</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
 
         </plugins>
     </build>
+
+    <repositories>
+        <repository>
+            <id>thingsboard-repo</id>
+            <url>https://repo.thingsboard.io/artifactory/libs-release-public</url>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+        </repository>
+    </repositories>
 
 </project>
