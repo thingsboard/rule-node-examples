@@ -32,7 +32,7 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <main.dir>${basedir}</main.dir>
-        <tb.version>2.4.1-SNAPSHOT</tb.version>
+        <tb.version>2.4.1</tb.version>
         <lombok.version>1.16.18</lombok.version>
         <guava.version>21.0</guava.version>
     </properties>
@@ -51,8 +51,14 @@
             <version>${tb.version}</version>
         </dependency>
         <dependency>
-            <groupId>org.thingsboard</groupId>
-            <artifactId>dao</artifactId>
+            <groupId>org.thingsboard.common</groupId>
+            <artifactId>util</artifactId>
+            <scope>provided</scope>
+            <version>${tb.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.thingsboard.common</groupId>
+            <artifactId>dao-api</artifactId>
             <scope>provided</scope>
             <version>${tb.version}</version>
         </dependency>
