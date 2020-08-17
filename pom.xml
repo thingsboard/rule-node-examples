@@ -32,7 +32,7 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <main.dir>${basedir}</main.dir>
-        <tb.version>3.1.0PE</tb.version>
+        <thingsboard.version>3.1.0</thingsboard.version>
         <lombok.version>1.16.18</lombok.version>
         <guava.version>21.0</guava.version>
     </properties>
@@ -42,31 +42,31 @@
             <groupId>org.thingsboard.common</groupId>
             <artifactId>data</artifactId>
             <scope>provided</scope>
-            <version>${tb.version}</version>
+            <version>${thingsboard.version}</version>
         </dependency>
         <dependency>
             <groupId>org.thingsboard.common</groupId>
             <artifactId>message</artifactId>
             <scope>provided</scope>
-            <version>${tb.version}</version>
+            <version>${thingsboard.version}</version>
         </dependency>
         <dependency>
             <groupId>org.thingsboard.common</groupId>
             <artifactId>util</artifactId>
             <scope>provided</scope>
-            <version>${tb.version}</version>
+            <version>${thingsboard.version}</version>
         </dependency>
         <dependency>
             <groupId>org.thingsboard.common</groupId>
             <artifactId>dao-api</artifactId>
             <scope>provided</scope>
-            <version>${tb.version}</version>
+            <version>${thingsboard.version}</version>
         </dependency>
         <dependency>
             <groupId>org.thingsboard.rule-engine</groupId>
             <artifactId>rule-engine-api</artifactId>
             <scope>provided</scope>
-            <version>${tb.version}</version>
+            <version>${thingsboard.version}</version>
         </dependency>
         <dependency>
             <groupId>org.projectlombok</groupId>

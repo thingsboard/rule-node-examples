@@ -17,16 +17,18 @@ package org.thingsboard.rule.engine.node.enrichment;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.thingsboard.rule.engine.api.*;
+import org.thingsboard.rule.engine.api.RuleNode;
+import org.thingsboard.rule.engine.api.TbContext;
+import org.thingsboard.rule.engine.api.TbNode;
+import org.thingsboard.rule.engine.api.TbNodeConfiguration;
+import org.thingsboard.rule.engine.api.TbNodeException;
 import org.thingsboard.rule.engine.api.util.TbNodeUtils;
 import org.thingsboard.server.common.data.plugin.ComponentType;
 import org.thingsboard.server.common.msg.TbMsg;
 
 import java.io.IOException;
 import java.util.Iterator;
-import java.util.concurrent.ExecutionException;
 
-import static org.thingsboard.rule.engine.api.TbRelationTypes.FAILURE;
 import static org.thingsboard.rule.engine.api.TbRelationTypes.SUCCESS;
 
 /**
