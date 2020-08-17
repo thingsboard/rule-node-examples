@@ -69,10 +69,10 @@ public class TbCalculateSumNode implements TbNode {
                 }
             }
             if (hasRecords) {
-                TbMsg newMsg = ctx.newMsg(msg.getType(), msg.getOriginator(), msg.getMetaData(), mapper.writeValueAsString(mapper.createObjectNode().put(outputKey, sum)));
+                TbMsg newMsg = TbMsg.transformMsg(msg, msg.getType(), msg.getOriginator(), msg.getMetaData(), mapper.writeValueAsString(mapper.createObjectNode().put(outputKey, sum)));
                 ctx.tellNext(newMsg, SUCCESS);
             } else {
-                ctx.tellNext(msg, FAILURE, new Exception("Message doesn't contains the key: " + inputKey));
+                ctx.tellFailure(msg, new Exception("Message doesn't contains the key: " + inputKey));
             }
         } catch (IOException e) {
             ctx.tellFailure(msg, e);

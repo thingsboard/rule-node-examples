@@ -57,7 +57,7 @@ public class TbGetSumIntoMetadata implements TbNode {
 
 
     @Override
-    public void onMsg(TbContext ctx, TbMsg msg) throws ExecutionException, InterruptedException, TbNodeException {
+    public void onMsg(TbContext ctx, TbMsg msg) {
         double sum = 0;
         boolean hasRecords = false;
         try {
@@ -72,10 +72,9 @@ public class TbGetSumIntoMetadata implements TbNode {
             }
             if (hasRecords) {
                 msg.getMetaData().putValue(outputKey, Double.toString(sum));
-                msg = ctx.newMsg(msg.getType(), msg.getOriginator(), msg.getMetaData(), msg.getData());
                 ctx.tellNext(msg, SUCCESS);
             } else {
-                ctx.tellNext(msg, FAILURE, new Exception("Message doesn't contains the Input Key: " + inputKey));
+                ctx.tellFailure(msg, new Exception("Message doesn't contains the Input Key: " + inputKey));
             }
         } catch (IOException e) {
             ctx.tellFailure(msg, e);

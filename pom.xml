@@ -32,7 +32,7 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <main.dir>${basedir}</main.dir>
-        <tb.version>2.4.1</tb.version>
+        <tb.version>3.1.0PE</tb.version>
         <lombok.version>1.16.18</lombok.version>
         <guava.version>21.0</guava.version>
     </properties>

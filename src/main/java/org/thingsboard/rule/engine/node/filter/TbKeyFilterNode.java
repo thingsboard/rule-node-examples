@@ -53,7 +53,7 @@ public class TbKeyFilterNode implements TbNode {
     }
 
     @Override
-    public void onMsg(TbContext ctx, TbMsg msg) throws ExecutionException, InterruptedException, TbNodeException {
+    public void onMsg(TbContext ctx, TbMsg msg) {
         try {
             ctx.tellNext(msg, mapper.readTree(msg.getData()).has(key) ? "True" : "False");
         } catch (IOException e) {
