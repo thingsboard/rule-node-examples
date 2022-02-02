@@ -35,6 +35,14 @@
         <thingsboard.version>3.1.0</thingsboard.version>
         <lombok.version>1.18.22</lombok.version>
         <guava.version>21.0</guava.version>
+        <!--         TEST SCOPE         -->
+        <spring-boot-starter-test.version>2.3.12.RELEASE</spring-boot-starter-test.version>
+        <jupiter.version>5.6.3</jupiter.version> <!-- keep the same version as spring-boot-starter-test depend on jupiter-->
+        <awaitility.version>4.1.0</awaitility.version>
+        <commons-io.version>2.5</commons-io.version>
+        <netty.version>4.1.66.Final</netty.version>
+        <spring-data-redis.version>2.4.3</spring-data-redis.version>
+        <protobuf.version>3.17.2</protobuf.version>
     </properties>
 
     <dependencies>
@@ -80,6 +88,55 @@
             <scope>provided</scope>
             <version>${guava.version}</version>
         </dependency>
+        <!--         TEST SCOPE         -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <version>${spring-boot-starter-test.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.junit.vintage</groupId>
+            <artifactId>junit-vintage-engine</artifactId>
+            <version>${jupiter.version}</version>
+            <scope>test</scope>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.hamcrest</groupId>
+                    <artifactId>hamcrest-core</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>org.awaitility</groupId>
+            <artifactId>awaitility</artifactId>
+            <version>${awaitility.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>commons-io</groupId>
+            <artifactId>commons-io</artifactId>
+            <version>${commons-io.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency> <!-- for mocking io.netty.channel.EventLoopGroup -->
+            <groupId>io.netty</groupId>
+            <artifactId>netty-transport</artifactId>
+            <version>${netty.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency> <!-- for mocking org.springframework.data.redis.core.RedisTemplate -->
+            <groupId>org.springframework.data</groupId>
+            <artifactId>spring-data-redis</artifactId>
+            <version>${spring-data-redis.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency> <!-- for com.google.protobuf.InvalidProtocolBufferException inside TbMsg-->
+            <groupId>com.google.protobuf</groupId>
+            <artifactId>protobuf-java</artifactId>
+            <version>${protobuf.version}</version>
+            <scope>test</scope>
+        </dependency>
     </dependencies>
 
     <build>
@@ -104,6 +161,11 @@
                             </path>
                         </annotationProcessorPaths>
                     </configuration>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-surefire-plugin</artifactId>
+                    <version>3.0.0-M5</version>
                 </plugin>
             </plugins>
         </pluginManagement>
