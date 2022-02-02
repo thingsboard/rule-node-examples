@@ -31,8 +31,6 @@ import java.io.IOException;
 import java.util.Iterator;
 import java.util.concurrent.ExecutionException;
 
-import static org.thingsboard.rule.engine.api.TbRelationTypes.SUCCESS;
-
 @Slf4j
 @RuleNode(
         type = ComponentType.TRANSFORMATION,
@@ -46,9 +44,9 @@ public class TbCalculateSumNode implements TbNode {
 
     private static final ObjectMapper mapper = new ObjectMapper();
 
-    private TbCalculateSumNodeConfiguration config;
-    private String inputKey;
-    private String outputKey;
+    TbCalculateSumNodeConfiguration config;
+    String inputKey;
+    String outputKey;
 
     @Override
     public void init(TbContext ctx, TbNodeConfiguration configuration) throws TbNodeException {
@@ -73,13 +71,17 @@ public class TbCalculateSumNode implements TbNode {
             }
             if (hasRecords) {
                 TbMsg newMsg = TbMsg.transformMsg(msg, msg.getType(), msg.getOriginator(), msg.getMetaData(), mapper.writeValueAsString(mapper.createObjectNode().put(outputKey, sum)));
-                ctx.tellNext(newMsg, SUCCESS);
+                ctx.tellSuccess(newMsg);
             } else {
-                ctx.tellFailure(msg, new Exception("Message doesn't contains the key: " + inputKey));
+                ctx.tellFailure(msg, new TbNodeException("Message doesn't contains the key: " + inputKey));
             }
         } catch (IOException e) {
             ctx.tellFailure(msg, e);
         }
+    }
+
+    long getNow() {
+        return System.currentTimeMillis();
     }
 
     @Override
