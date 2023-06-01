@@ -83,8 +83,4 @@ public class TbGetSumIntoMetadata implements TbNode {
         }
     }
 
-    @Override
-    public void destroy() {
-
-    }
 }

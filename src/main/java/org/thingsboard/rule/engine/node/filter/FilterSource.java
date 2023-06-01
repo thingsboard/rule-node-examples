@@ -15,20 +15,9 @@
  */
 package org.thingsboard.rule.engine.node.filter;
 
-import lombok.Data;
-import org.thingsboard.rule.engine.api.NodeConfiguration;
+public enum FilterSource {
 
-@Data
-public class TbKeyFilterNodeConfiguration implements NodeConfiguration<TbKeyFilterNodeConfiguration> {
+    DATA,
+    METADATA
 
-    private String key;
-    private FilterSource filterSource;
-
-    @Override
-    public TbKeyFilterNodeConfiguration defaultConfiguration() {
-        TbKeyFilterNodeConfiguration configuration = new TbKeyFilterNodeConfiguration();
-        configuration.setKey(null);
-        configuration.setFilterSource(FilterSource.DATA);
-        return configuration;
-    }
 }

@@ -84,7 +84,4 @@ public class TbCalculateSumNode implements TbNode {
         return System.currentTimeMillis();
     }
 
-    @Override
-    public void destroy() {
-    }
 }
