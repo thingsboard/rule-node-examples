@@ -15,15 +15,18 @@
  */
 package org.thingsboard.rule.engine.node.filter;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import lombok.extern.slf4j.Slf4j;
 import org.thingsboard.rule.engine.api.RuleNode;
 import org.thingsboard.rule.engine.api.TbContext;
-import org.thingsboard.rule.engine.api.TbNode;
 import org.thingsboard.rule.engine.api.TbNodeConfiguration;
 import org.thingsboard.rule.engine.api.TbNodeException;
+import org.thingsboard.rule.engine.api.TbVersionedNode;
 import org.thingsboard.rule.engine.api.util.TbNodeUtils;
 import org.thingsboard.server.common.data.plugin.ComponentType;
+import org.thingsboard.server.common.data.util.TbPair;
 import org.thingsboard.server.common.msg.TbMsg;
 
 import java.io.IOException;
@@ -33,13 +36,14 @@ import java.io.IOException;
 @RuleNode(
         type = ComponentType.FILTER,
         name = "check key",
+        version = 1,
         relationTypes = {"True", "False"},
         configClazz = TbKeyFilterNodeConfiguration.class,
-        nodeDescription = "Checks the existence of the selected key in the message payload.",
+        nodeDescription = "Checks the existence of the selected key in the message or message metadata.",
         nodeDetails = "If the selected key  exists - send Message via <b>True</b> chain, otherwise <b>False</b> chain is used.",
         uiResources = {"static/rulenode/custom-nodes-config.js"},
         configDirective = "tbFilterNodeCheckKeyConfig")
-public class TbKeyFilterNode implements TbNode {
+public class TbKeyFilterNode implements TbVersionedNode {
 
     private static final ObjectMapper mapper = new ObjectMapper();
 
@@ -63,6 +67,16 @@ public class TbKeyFilterNode implements TbNode {
     }
 
     @Override
-    public void destroy() {
+    public TbPair<Boolean, JsonNode> upgrade(int fromVersion, JsonNode oldConfiguration) throws TbNodeException {
+        try {
+            if (fromVersion == 0) {
+                var newConfigObjectNode = (ObjectNode) oldConfiguration;
+                newConfigObjectNode.put("filterSource", FilterSource.DATA.name());
+                return new TbPair<>(true, newConfigObjectNode);
+            }
+            return new TbPair<>(false, oldConfiguration);
+        } catch (Exception e) {
+            throw new TbNodeException(e);
+        }
     }
 }
