@@ -34,7 +34,7 @@
         <main.dir>${basedir}</main.dir>
         <thingsboard.version>3.5.0</thingsboard.version>
         <lombok.version>1.18.18</lombok.version>
-        <guava.version>31.1-jre</guava.version>
+        <guava.version>32.0.0-jre</guava.version>
         <!--         TEST SCOPE         -->
         <spring-boot-starter-test.version>2.7.10</spring-boot-starter-test.version>
         <jupiter.version>5.8.2</jupiter.version> <!-- keep the same version as spring-boot-starter-test depend on jupiter-->
