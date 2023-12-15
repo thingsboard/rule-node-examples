@@ -32,7 +32,7 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <main.dir>${basedir}</main.dir>
-        <thingsboard.version>3.5.0</thingsboard.version>
+        <thingsboard.version>3.6.0</thingsboard.version>
         <lombok.version>1.18.18</lombok.version>
         <guava.version>31.1-jre</guava.version>
         <!--         TEST SCOPE         -->
