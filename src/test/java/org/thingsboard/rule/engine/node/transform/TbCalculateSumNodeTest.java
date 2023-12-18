@@ -40,7 +40,7 @@ import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
-import static org.thingsboard.server.common.msg.session.SessionMsgType.POST_ATTRIBUTES_REQUEST;
+import static org.thingsboard.server.common.data.msg.TbMsgType.POST_ATTRIBUTES_REQUEST;
 
 @Slf4j
 class TbCalculateSumNodeTest {
@@ -97,19 +97,19 @@ class TbCalculateSumNodeTest {
         final String data = "{\"temperature1\":22.5,\"temperature2\":10.3}";
         final String expected = "{\"TemperatureSum\":32.8}";
 
-        TbMsg msg = TbMsg.newMsg("POST_ATTRIBUTES_REQUEST", deviceId, metaData, data, callback);
+        TbMsg msg = TbMsg.newMsg(POST_ATTRIBUTES_REQUEST, deviceId, metaData, data, callback);
 
         node.onMsg(ctx, msg);
 
         ArgumentCaptor<TbMsg> newMsgCaptor = ArgumentCaptor.forClass(TbMsg.class);
-        verify(ctx, times(1)).tellSuccess(newMsgCaptor.capture());
+        verify(ctx).tellSuccess(newMsgCaptor.capture());
         verify(ctx, never()).tellFailure(any(), any());
 
         TbMsg newMsg = newMsgCaptor.getValue();
         assertThat(newMsg).isNotNull();
 
         log.info("data: {}", newMsg);
-        assertThat(newMsg.getType()).isEqualTo(POST_ATTRIBUTES_REQUEST.name());
+        assertThat(newMsg.getInternalType()).isEqualTo(POST_ATTRIBUTES_REQUEST);
         assertThat(newMsg.getMetaData().getData()).isEqualTo(mdMap);
         assertThat(newMsg.getData()).isEqualTo(expected);
     }
@@ -117,8 +117,7 @@ class TbCalculateSumNodeTest {
     @Test
     void givenEmptyMsg_whenOnMsg_thenTellFailure() throws Exception {
         final TbMsgMetaData metaData = new TbMsgMetaData();
-        final String data = "{}";
-        TbMsg msg = TbMsg.newMsg("POST_ATTRIBUTES_REQUEST", deviceId, metaData, data, callback);
+        TbMsg msg = TbMsg.newMsg(POST_ATTRIBUTES_REQUEST, deviceId, metaData, TbMsg.EMPTY_JSON_OBJECT, callback);
 
         node.onMsg(ctx, msg);
 

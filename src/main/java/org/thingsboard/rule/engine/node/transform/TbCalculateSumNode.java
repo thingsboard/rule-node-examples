@@ -16,8 +16,8 @@
 package org.thingsboard.rule.engine.node.transform;
 
 import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
+import org.thingsboard.common.util.JacksonUtil;
 import org.thingsboard.rule.engine.api.RuleNode;
 import org.thingsboard.rule.engine.api.TbContext;
 import org.thingsboard.rule.engine.api.TbNode;
@@ -27,9 +27,7 @@ import org.thingsboard.rule.engine.api.util.TbNodeUtils;
 import org.thingsboard.server.common.data.plugin.ComponentType;
 import org.thingsboard.server.common.msg.TbMsg;
 
-import java.io.IOException;
 import java.util.Iterator;
-import java.util.concurrent.ExecutionException;
 
 @Slf4j
 @RuleNode(
@@ -41,8 +39,6 @@ import java.util.concurrent.ExecutionException;
         uiResources = {"static/rulenode/custom-nodes-config.js"},
         configDirective = "tbTransformationNodeSumConfig")
 public class TbCalculateSumNode implements TbNode {
-
-    private static final ObjectMapper mapper = new ObjectMapper();
 
     TbCalculateSumNodeConfiguration config;
     String inputKey;
@@ -56,27 +52,24 @@ public class TbCalculateSumNode implements TbNode {
     }
 
     @Override
-    public void onMsg(TbContext ctx, TbMsg msg) throws ExecutionException, InterruptedException, TbNodeException {
+    public void onMsg(TbContext ctx, TbMsg msg) {
         double sum = 0;
         boolean hasRecords = false;
-        try {
-            JsonNode jsonNode = mapper.readTree(msg.getData());
-            Iterator<String> iterator = jsonNode.fieldNames();
-            while (iterator.hasNext()) {
-                String field = iterator.next();
-                if (field.startsWith(inputKey)) {
-                    hasRecords = true;
-                    sum += jsonNode.get(field).asDouble();
-                }
+        JsonNode data = JacksonUtil.toJsonNode(msg.getData());
+        Iterator<String> iterator = data.fieldNames();
+        while (iterator.hasNext()) {
+            String field = iterator.next();
+            if (field.startsWith(inputKey)) {
+                hasRecords = true;
+                sum += data.get(field).asDouble();
             }
-            if (hasRecords) {
-                TbMsg newMsg = TbMsg.transformMsg(msg, msg.getType(), msg.getOriginator(), msg.getMetaData(), mapper.writeValueAsString(mapper.createObjectNode().put(outputKey, sum)));
-                ctx.tellSuccess(newMsg);
-            } else {
-                ctx.tellFailure(msg, new TbNodeException("Message doesn't contains the key: " + inputKey));
-            }
-        } catch (IOException e) {
-            ctx.tellFailure(msg, e);
+        }
+        if (hasRecords) {
+            var newDataWithSum = JacksonUtil.newObjectNode();
+            TbMsg newMsg = TbMsg.transformMsgData(msg, JacksonUtil.toString(newDataWithSum.put(outputKey, sum)));
+            ctx.tellSuccess(newMsg);
+        } else {
+            ctx.tellFailure(msg, new TbNodeException("Message doesn't contains the key: " + inputKey));
         }
     }
 

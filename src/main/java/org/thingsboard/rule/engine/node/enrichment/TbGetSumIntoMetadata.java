@@ -16,7 +16,7 @@
 package org.thingsboard.rule.engine.node.enrichment;
 
 import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import org.thingsboard.common.util.JacksonUtil;
 import org.thingsboard.rule.engine.api.RuleNode;
 import org.thingsboard.rule.engine.api.TbContext;
 import org.thingsboard.rule.engine.api.TbNode;
@@ -26,7 +26,6 @@ import org.thingsboard.rule.engine.api.util.TbNodeUtils;
 import org.thingsboard.server.common.data.plugin.ComponentType;
 import org.thingsboard.server.common.msg.TbMsg;
 
-import java.io.IOException;
 import java.util.Iterator;
 
 import static org.thingsboard.server.common.data.msg.TbNodeConnectionType.SUCCESS;
@@ -44,8 +43,6 @@ import static org.thingsboard.server.common.data.msg.TbNodeConnectionType.SUCCES
         configDirective = "tbEnrichmentNodeSumIntoMetadataConfig")
 public class TbGetSumIntoMetadata implements TbNode {
 
-    private static final ObjectMapper mapper = new ObjectMapper();
-
     private TbGetSumIntoMetadataConfiguration config;
     private String inputKey;
     private String outputKey;
@@ -62,24 +59,20 @@ public class TbGetSumIntoMetadata implements TbNode {
     public void onMsg(TbContext ctx, TbMsg msg) {
         double sum = 0;
         boolean hasRecords = false;
-        try {
-            JsonNode jsonNode = mapper.readTree(msg.getData());
-            Iterator<String> iterator = jsonNode.fieldNames();
-            while (iterator.hasNext()) {
-                String field = iterator.next();
-                if (field.startsWith(inputKey)) {
-                    sum += jsonNode.get(field).asDouble();
-                    hasRecords = true;
-                }
+        JsonNode data = JacksonUtil.toJsonNode(msg.getData());
+        Iterator<String> iterator = data.fieldNames();
+        while (iterator.hasNext()) {
+            String field = iterator.next();
+            if (field.startsWith(inputKey)) {
+                sum += data.get(field).asDouble();
+                hasRecords = true;
             }
-            if (hasRecords) {
-                msg.getMetaData().putValue(outputKey, Double.toString(sum));
-                ctx.tellNext(msg, SUCCESS);
-            } else {
-                ctx.tellFailure(msg, new Exception("Message doesn't contains the Input Key: " + inputKey));
-            }
-        } catch (IOException e) {
-            ctx.tellFailure(msg, e);
+        }
+        if (hasRecords) {
+            msg.getMetaData().putValue(outputKey, Double.toString(sum));
+            ctx.tellNext(msg, SUCCESS);
+        } else {
+            ctx.tellFailure(msg, new Exception("Message doesn't contains the Input Key: " + inputKey));
         }
     }
 
