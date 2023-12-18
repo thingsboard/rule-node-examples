@@ -115,9 +115,8 @@ class TbCalculateSumNodeTest {
     }
 
     @Test
-    void givenEmptyMsg_whenOnMsg_thenTellFailure() throws Exception {
-        final TbMsgMetaData metaData = new TbMsgMetaData();
-        TbMsg msg = TbMsg.newMsg(POST_ATTRIBUTES_REQUEST, deviceId, metaData, TbMsg.EMPTY_JSON_OBJECT, callback);
+    void givenEmptyMsg_whenOnMsg_thenTellFailure() {
+        TbMsg msg = TbMsg.newMsg(POST_ATTRIBUTES_REQUEST, deviceId, TbMsgMetaData.EMPTY, TbMsg.EMPTY_JSON_OBJECT, callback);
 
         node.onMsg(ctx, msg);
 
