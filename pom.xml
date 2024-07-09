@@ -32,17 +32,18 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <main.dir>${basedir}</main.dir>
-        <thingsboard.version>3.6.0</thingsboard.version>
-        <lombok.version>1.18.18</lombok.version>
-        <guava.version>31.1-jre</guava.version>
+        <thingsboard.version>3.7.0</thingsboard.version>
+        <lombok.version>1.18.32</lombok.version>
+        <guava.version>33.1.0-jre</guava.version>
         <!--         TEST SCOPE         -->
         <spring-boot-starter-test.version>2.7.10</spring-boot-starter-test.version>
-        <jupiter.version>5.8.2</jupiter.version> <!-- keep the same version as spring-boot-starter-test depend on jupiter-->
-        <awaitility.version>4.1.0</awaitility.version>
-        <commons-io.version>2.11.0</commons-io.version>
-        <netty.version>4.1.91.Final</netty.version>
-        <spring-data-redis.version>2.7.10</spring-data-redis.version>
-        <protobuf.version>3.21.9</protobuf.version>
+        <jupiter.version>5.10.2</jupiter.version> <!-- keep the same version as spring-boot-starter-test depend on jupiter-->
+        <awaitility.version>4.2.1</awaitility.version>
+        <commons-io.version>2.16.1</commons-io.version>
+        <netty.version>4.1.109.Final</netty.version>
+        <spring-data-redis.version>3.2.5</spring-data-redis.version>
+        <protobuf.version>3.25.3</protobuf.version>
+        <surefire.version>3.2.5</surefire.version>
     </properties>
 
     <dependencies>
@@ -145,9 +146,9 @@
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-compiler-plugin</artifactId>
-                    <version>3.8.1</version>
+                    <version>3.11.0</version>
                     <configuration>
-                        <release>11</release>
+                        <release>17</release>
                         <compilerArgs>
                             <arg>-Xlint:deprecation</arg>
                             <arg>-Xlint:removal</arg>
@@ -165,7 +166,7 @@
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-surefire-plugin</artifactId>
-                    <version>3.0.0-M6</version>
+                    <version>${surefire.version}</version>
                 </plugin>
             </plugins>
         </pluginManagement>
