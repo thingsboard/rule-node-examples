@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
 
-    Copyright © 2018-2023 The Thingsboard Authors
+    Copyright © 2018-2024 The Thingsboard Authors
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
@@ -36,7 +36,7 @@
         <lombok.version>1.18.32</lombok.version>
         <guava.version>33.1.0-jre</guava.version>
         <!--         TEST SCOPE         -->
-        <spring-boot-starter-test.version>2.7.10</spring-boot-starter-test.version>
+        <spring-boot-starter-test.version>3.2.4</spring-boot-starter-test.version>
         <jupiter.version>5.10.2</jupiter.version> <!-- keep the same version as spring-boot-starter-test depend on jupiter-->
         <awaitility.version>4.2.1</awaitility.version>
         <commons-io.version>2.16.1</commons-io.version>
