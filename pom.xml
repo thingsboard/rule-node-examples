@@ -32,17 +32,17 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <main.dir>${basedir}</main.dir>
-        <thingsboard.version>3.8.1</thingsboard.version>
+        <thingsboard.version>3.9.0</thingsboard.version>
         <lombok.version>1.18.32</lombok.version>
         <guava.version>33.1.0-jre</guava.version>
         <!--         TEST SCOPE         -->
-        <spring-boot-starter-test.version>3.2.4</spring-boot-starter-test.version>
-        <jupiter.version>5.10.2</jupiter.version> <!-- keep the same version as spring-boot-starter-test depend on jupiter-->
+        <spring-boot-starter-test.version>3.2.12</spring-boot-starter-test.version>
+        <jupiter.version>5.10.5</jupiter.version> <!-- keep the same version as spring-boot-starter-test depend on jupiter-->
         <awaitility.version>4.2.1</awaitility.version>
         <commons-io.version>2.16.1</commons-io.version>
-        <netty.version>4.1.109.Final</netty.version>
-        <spring-data-redis.version>3.2.5</spring-data-redis.version>
-        <protobuf.version>3.25.3</protobuf.version>
+        <netty.version>4.1.115.Final</netty.version>
+        <spring-data-redis.version>3.2.12</spring-data-redis.version>
+        <protobuf.version>3.25.5</protobuf.version>
         <surefire.version>3.2.5</surefire.version>
     </properties>
 
