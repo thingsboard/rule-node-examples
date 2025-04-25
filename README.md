@@ -5,4 +5,4 @@ Unit tests examples for custom rule nodes added as well
 
 To build the project run `mvn clean install`
 
-To build a custom Docker image run `DOCKER_BUILDKIT=0 docker build . -t your_repo/tb-node:3.9.1-custom-1`
+To build a custom Docker image run `DOCKER_BUILDKIT=0 docker build . -t your_repo/tb-node:4.0.1-custom-1`
