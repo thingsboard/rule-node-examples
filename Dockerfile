@@ -14,8 +14,9 @@
 # limitations under the License.
 #
 
-FROM thingsboard/tb-node:4.0.1
-COPY target/rule-engine-1.0.0-custom-nodes.jar /usr/share/thingsboard/extensions/
+# Use the latest available ThingsBoard PE node image if 4.0.1PE is not available/suitable.
+FROM thingsboard/tb-pe-node:4.0.1PE
+COPY target/custom-nodes-1.0.0.jar /usr/share/thingsboard/extensions/
 
 #USER root
 #
