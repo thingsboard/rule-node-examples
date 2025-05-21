@@ -20,21 +20,24 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
-    <groupId>com.custom-nodes.tb</groupId>
-    <artifactId>rule-engine</artifactId>
+    <groupId>org.thingsboard.custom</groupId>
+    <artifactId>custom-nodes</artifactId>
     <version>1.0.0</version>
     <packaging>jar</packaging>
 
-    <name>Thingsboard Rule Engine Nodes</name>
+    <name>Thingsboard Custom Rule Nodes</name>
     <url>https://thingsboard.io</url>
     <inceptionYear>2018</inceptionYear>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <java.version>17</java.version>
         <main.dir>${basedir}</main.dir>
         <thingsboard.version>4.0.1</thingsboard.version>
         <lombok.version>1.18.32</lombok.version>
         <guava.version>33.1.0-jre</guava.version>
+        <jackson.version>2.15.2</jackson.version> <!-- Align with a common ThingsBoard version or use property from TB parent -->
+        <slf4j.version>1.7.32</slf4j.version> <!-- Align with a common ThingsBoard version -->
         <!--         TEST SCOPE         -->
         <spring-boot-starter-test.version>3.2.12</spring-boot-starter-test.version>
         <jupiter.version>5.10.5</jupiter.version> <!-- keep the same version as spring-boot-starter-test depend on jupiter-->
@@ -88,6 +91,18 @@
             <artifactId>guava</artifactId>
             <scope>provided</scope>
             <version>${guava.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+            <version>${jackson.version}</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <version>${slf4j.version}</version>
+            <scope>provided</scope>
         </dependency>
         <!--         TEST SCOPE         -->
         <dependency>
@@ -148,7 +163,7 @@
                     <artifactId>maven-compiler-plugin</artifactId>
                     <version>3.11.0</version>
                     <configuration>
-                        <release>17</release>
+                        <release>${java.version}</release>
                         <compilerArgs>
                             <arg>-Xlint:deprecation</arg>
                             <arg>-Xlint:removal</arg>

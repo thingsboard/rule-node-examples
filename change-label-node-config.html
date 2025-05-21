@@ -1,0 +1,36 @@
+<mat-toolbar fxLayout="row" color="primary">
+  <h2>Change Label Node Configuration</h2>
+</mat-toolbar>
+
+<div class="mat-padding" fxLayout="column">
+  <form [formGroup]="changeLabelNodeConfigForm">
+    <mat-form-field class="mat-block">
+      <mat-label>Label Source</mat-label>
+      <mat-select formControlName="labelSource" required>
+        <mat-option value="STATIC">Static Value</mat-option>
+        <mat-option value="MESSAGE_METADATA">Message Metadata</mat-option>
+        <mat-option value="MESSAGE_DATA">Message Data</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field class="mat-block" *ngIf="changeLabelNodeConfigForm.get('labelSource').value === 'STATIC'">
+      <mat-label>Static Label Value</mat-label>
+      <input matInput formControlName="staticLabelValue" placeholder="Enter static label">
+    </mat-form-field>
+
+    <mat-form-field class="mat-block" *ngIf="changeLabelNodeConfigForm.get('labelSource').value === 'MESSAGE_METADATA' || changeLabelNodeConfigForm.get('labelSource').value === 'MESSAGE_DATA'">
+      <mat-label>Label Name or Pattern</mat-label>
+      <input matInput formControlName="labelNameOrPattern" placeholder="Metadata key or Message data field/pattern">
+    </mat-form-field>
+
+    <!-- Target Entity Type - Not explicitly requested for UI but part of config -->
+    <!-- For simplicity, we'll let the backend handle default/inference if empty -->
+    <!-- Or it could be added here if user-override is desired -->
+     <mat-form-field class="mat-block">
+      <mat-label>Target Entity Type (Optional)</mat-label>
+      <input matInput formControlName="targetEntityType" placeholder="e.g., DEVICE, ASSET (leave empty to infer)">
+      <mat-hint>If empty, the node will try to infer from the message originator.</mat-hint>
+    </mat-form-field>
+
+  </form>
+</div>
