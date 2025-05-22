@@ -1,6 +1,6 @@
 # Custom ThingsBoard Rule Node: Change Entity Label
 
-This project provides a custom ThingsBoard rule node that allows you to change the label (name) of an entity (Device, Asset, or Customer) based on incoming messages.
+This project provides a custom ThingsBoard rule node that allows you to change the label (name/title) of an entity (Device, Asset, or Customer) based on incoming messages.
 
 ## Functionality
 
@@ -13,134 +13,69 @@ The node identifies the entity type (Device, Asset, Customer) from the message o
 
 ## Prerequisites
 
-Before you begin, ensure you have the following installed:
-*   [OpenJDK 17](https://adoptium.net/)
+Ensure you have the following installed:
+*   [OpenJDK 17](https://adoptium.net/) (or the Java version targeted by your ThingsBoard instance)
 *   [Apache Maven](https://maven.apache.org/download.cgi) (3.6.0+ recommended)
-*   [Docker](https://www.docker.com/get-started)
-*   `kubectl` (Kubernetes command-line tool, configured to connect to your GKE cluster)
-*   Access to a Docker image registry (e.g., Google Container Registry (GCR) or Artifact Registry)
+*   [Node.js and npm](https://nodejs.org/) (for compiling the Angular UI component - version compatible with Angular used in your ThingsBoard version)
+*   [Angular CLI](https://angular.io/cli) (globally or locally, for compiling the UI component)
 
-## Compilation
+## Building the Rule Node
 
-1.  **Clone the Repository:**
-    ```bash
-    git clone https://your-repository-url/rule-node-change-label.git # Replace with actual URL
-    cd rule-node-change-label
-    ```
+The rule node consists of a Java backend and an Angular frontend component for configuration.
 
-2.  **Configure for ThingsBoard PE:**
-    Open the `pom.xml` file and ensure the `thingsboard.version` property is set to use the Professional Edition. For version 4.0.1PE, it should look like this:
-    ```xml
-    <properties>
-        ...
-        <thingsboard.version>4.0.1PE</thingsboard.version>
-        ...
-    </properties>
-    ```
-    *(This step should already be done if you followed the plan, but it's good to have it in the README).*
+**1. Backend (Java):**
 
-3.  **Build the JAR:**
-    Compile the project and package it into a JAR file:
-    ```bash
-    mvn clean install
-    ```
-    This command will generate the JAR file in the `target/` directory (e.g., `target/custom-nodes-1.0.0.jar`).
-
-## Building the Docker Image
-
-This rule node is designed to be deployed as part of the ThingsBoard PE Rule Engine microservice in a Kubernetes environment like GKE.
-
-1.  **Dockerfile:**
-    The provided `Dockerfile` is set up to package your custom rule node JAR into a Docker image. It should look similar to this:
-
-    ```dockerfile
-    # Copyright © 2018-2025 The Thingsboard Authors
-    # ... (license headers) ...
-
-    # Use the latest available ThingsBoard PE node image if 4.0.1PE is not available/suitable.
-    FROM thingsboard/tb-pe-node:4.0.1PE
-    COPY target/custom-nodes-1.0.0.jar /usr/share/thingsboard/extensions/
-    ```
-    *   Ensure the `FROM` line points to the correct ThingsBoard PE rule engine base image for your ThingsBoard version.
-    *   Ensure the `COPY` command correctly references the JAR file produced by the `mvn clean install` command (e.g., `custom-nodes-1.0.0.jar`).
-
-2.  **Build the Image:**
-    Use the `docker build` command to create your image. Replace `YOUR_REGISTRY`, `YOUR_IMAGE_NAME`, and `YOUR_TAG` with your details.
-    ```bash
-    docker build . -t YOUR_REGISTRY/YOUR_IMAGE_NAME:YOUR_TAG
-    ```
-    Example for Google Container Registry (GCR):
-    ```bash
-    docker build . -t gcr.io/your-gcp-project-id/tb-pe-node-change-label:latest
-    ```
-
-## Pushing the Docker Image
-
-Push the newly built image to your Docker registry:
+Compile the Java part of the project and package it into a JAR file:
 ```bash
-docker push YOUR_REGISTRY/YOUR_IMAGE_NAME:YOUR_TAG
+mvn clean package
 ```
-Example for GCR:
-```bash
-docker push gcr.io/your-gcp-project-id/tb-pe-node-change-label:latest
-```
+This command will generate the JAR file in the `target/` directory (e.g., `target/custom-nodes-1.0.0.jar`). This JAR contains the main rule node logic.
 
-## Deployment to ThingsBoard PE on GKE
+**2. Frontend (Angular UI Configuration):**
 
-1.  **Update Kubernetes Manifest:**
-    You'll need to update the Kubernetes deployment or statefulset manifest for your ThingsBoard PE `tb-rule-engine` microservice (the exact name might vary based on your deployment). Modify the manifest to use the new Docker image you just pushed.
+The UI configuration for this rule node is built using Angular. The source files are:
+*   `change-label-node-config.component.ts`
+*   `change-label-node-config.html`
 
-    Find the container spec for the rule engine and update the `image` field:
-    ```yaml
-    spec:
-      template:
-        spec:
-          containers:
-            - name: tb-rule-engine # Or your rule engine container name
-              image: YOUR_REGISTRY/YOUR_IMAGE_NAME:YOUR_TAG # <-- Update this line
-              env: # Ensure PLUGINS_SCAN_PACKAGES is correctly set
-                - name: PLUGINS_SCAN_PACKAGES
-                  value: "org.thingsboard.server.extensions,org.thingsboard.rule.engine,org.thingsboard.custom.rule.node" # Add other custom packages if any
-    ```
+These files need to be compiled into a JavaScript file. The `ChangeLabelNode.java` expects this file to be available as `static/rulenode/change-label-node-config.js`.
 
-2.  **Package Scanning (`PLUGINS_SCAN_PACKAGES`):**
-    ThingsBoard needs to scan the package containing your custom rule node. The current node resides in `org.thingsboard.rule.engine.node`.
-    The `pom.xml` uses `org.thingsboard.custom` as the `groupId`. The Java files are under `org.thingsboard.rule.engine.node`.
-    The default `PLUGINS_SCAN_PACKAGES` in ThingsBoard PE usually includes `org.thingsboard.rule.engine`.
-    If you've used a different root package for your custom nodes (e.g., `com.mycompany.thingsboard.nodes`), ensure that package is added to the `PLUGINS_SCAN_PACKAGES` environment variable in your `tb-rule-engine` Kubernetes manifest, as shown in the example above. The current example `org.thingsboard.custom.rule.node` might be needed if the default doesn't pick up sub-packages of `org.thingsboard.rule.engine` when they are in a different artifact. It's safer to include it.
+**Steps to compile and include the UI:**
 
-3.  **Apply Changes:**
-    Apply the updated manifest to your GKE cluster:
-    ```bash
-    kubectl apply -f your-rule-engine-deployment.yaml -n YOUR_THINGSBOARD_NAMESPACE
-    ```
-    Replace `your-rule-engine-deployment.yaml` with the actual filename of your manifest and `YOUR_THINGSBOARD_NAMESPACE` with the namespace where ThingsBoard is deployed. This will trigger a rolling update of your rule engine pods.
+*   **Option A: Manual Compilation and Placement (Recommended for this repository's structure)**
+    1.  You will need to set up a minimal Angular environment if you don't have one, or integrate these components into an existing Angular workspace that can compile them.
+    2.  Compile `change-label-node-config.component.ts` (and its HTML template) into a single JavaScript file named `change-label-node-config.js`. This typically involves using the Angular CLI (`ng build`). *Note: This repository does not provide a pre-configured Angular build setup for this individual component.*
+    3.  Create the directory `src/main/resources/public/static/rulenode/`.
+    4.  Place the compiled `change-label-node-config.js` file into `src/main/resources/public/static/rulenode/`.
+    5.  Re-run `mvn clean package`. The `maven-resources-plugin` (default part of Maven builds) should then include this JS file in the final JAR at the correct path (`/static/rulenode/change-label-node-config.js`).
 
-## Adding and Configuring the Node in ThingsBoard UI
+*   **Option B: Deploying JS separately**
+    Alternatively, the compiled `change-label-node-config.js` can be deployed directly to the ThingsBoard server's static content directory that serves rule node UI resources, if your ThingsBoard deployment allows for that.
 
-1.  **Refresh ThingsBoard UI:**
-    After the `tb-rule-engine` pods have restarted with the new image, clear your browser cache and refresh the ThingsBoard web UI.
+**Why is the UI compilation separate?**
+This repository is focused on providing just the rule node code. Integrating a full Angular build process into the `pom.xml` for a single component adds complexity not desired here. The `ChangeLabelNode.java` file references the expected JavaScript file via the `@RuleNode` annotation's `uiResources` attribute.
 
-2.  **Add to Rule Chain:**
+## Deploying and Using the Node
+
+1.  **Deploy the JAR:**
+    *   Take the JAR file generated by `mvn package` (e.g., `target/custom-nodes-1.0.0.jar`).
+    *   Deploy this JAR to your ThingsBoard instance. This usually involves placing it in the appropriate extensions or plugins directory for your ThingsBoard installation or microservice. Consult the official ThingsBoard documentation for "Custom Rule Nodes" deployment.
+
+2.  **Package Scanning:**
+    Ensure ThingsBoard is configured to scan the package containing your custom rule node. The Java class `ChangeLabelNode` is in package `org.thingsboard.rule.engine.node`. The `pom.xml` uses `org.thingsboard.custom` as the `groupId`. Ensure your `PLUGINS_SCAN_PACKAGES` environment variable (or equivalent configuration in ThingsBoard) includes `org.thingsboard.rule.engine.node` or a parent package like `org.thingsboard.rule.engine` or `org.thingsboard.custom`.
+
+3.  **Add and Configure in ThingsBoard UI:**
+    *   After deploying the JAR and restarting ThingsBoard (if necessary), refresh the ThingsBoard web UI.
     *   Navigate to the Rule Chain where you want to add the node.
-    *   Click the "+" icon to add a new node.
-    *   The "Change Entity Label" node should appear in the **Action** section of the rule node list (based on `ComponentType.ACTION` in its definition).
+    *   Click the "+" icon to add a new node. The "Change Entity Label" node should appear in the **Action** section.
     *   Drag and drop it onto your rule chain.
-
-3.  **Configure the Node:**
-    *   Click on the newly added "Change Entity Label" node to open its configuration dialog.
-    *   You will see fields to define:
-        *   **Label Source:** Choose from `STATIC`, `MESSAGE_METADATA`, or `MESSAGE_DATA`.
-        *   **Static Label Value:** (If Label Source is `STATIC`) Enter the fixed label string.
-        *   **Label Name or Pattern:** (If Label Source is `MESSAGE_METADATA` or `MESSAGE_DATA`) Enter the metadata key or JSON key/path to extract the label from.
-        *   **Target Entity Type:** (This field was in the Angular component but might not be actively used by the Java node if it relies purely on originator type. The Java node determines type via `msg.getOriginator().getEntityType()`).
-    *   Configure the settings according to your requirements.
+    *   Configure the node:
+        *   **Label Source:** `STATIC`, `MESSAGE_METADATA`, or `MESSAGE_DATA`.
+        *   **Static Label Value:** If Label Source is `STATIC`.
+        *   **Label Name or Pattern:** If Label Source is `MESSAGE_METADATA` or `MESSAGE_DATA`.
+        *   **Target Entity Type:** (Optional) The Angular form includes this field. However, the Java node primarily determines the entity type from the message originator (`msg.getOriginator().getEntityType()`) and does not currently use this configuration field in its logic.
     *   Save the configuration and the rule chain.
 
 ## Troubleshooting
 
-*   Check the logs of your `tb-rule-engine` pods in GKE for any errors during startup or message processing:
-    ```bash
-    kubectl logs YOUR_TB_RULE_ENGINE_POD_NAME -n YOUR_THINGSBOARD_NAMESPACE -f
-    ```
-*   Enable debug mode for the "Change Entity Label" node in your rule chain to see how it processes messages and what labels are being generated.
+*   Check the logs of your ThingsBoard server or `tb-rule-engine` service for errors during startup or message processing.
+*   Enable debug mode for the "Change Entity Label" node in your rule chain to see how it processes messages.
