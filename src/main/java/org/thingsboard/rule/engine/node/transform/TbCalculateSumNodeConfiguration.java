@@ -18,7 +18,6 @@ package org.thingsboard.rule.engine.node.transform;
 import lombok.Data;
 import org.thingsboard.rule.engine.api.NodeConfiguration;
 
-
 @Data
 public class TbCalculateSumNodeConfiguration implements NodeConfiguration<TbCalculateSumNodeConfiguration> {
 
@@ -27,12 +26,10 @@ public class TbCalculateSumNodeConfiguration implements NodeConfiguration<TbCalc
 
     @Override
     public TbCalculateSumNodeConfiguration defaultConfiguration() {
-        TbCalculateSumNodeConfiguration configuration = new TbCalculateSumNodeConfiguration();
+        var configuration = new TbCalculateSumNodeConfiguration();
         configuration.setInputKey("temperature");
         configuration.setOutputKey("TemperatureSum");
         return configuration;
     }
 
 }
-
-
