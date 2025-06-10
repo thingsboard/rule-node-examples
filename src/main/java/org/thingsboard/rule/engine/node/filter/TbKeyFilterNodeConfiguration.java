@@ -25,8 +25,9 @@ public class TbKeyFilterNodeConfiguration implements NodeConfiguration<TbKeyFilt
 
     @Override
     public TbKeyFilterNodeConfiguration defaultConfiguration() {
-        TbKeyFilterNodeConfiguration configuration = new TbKeyFilterNodeConfiguration();
+        var configuration = new TbKeyFilterNodeConfiguration();
         configuration.setKey(null);
         return configuration;
     }
+
 }

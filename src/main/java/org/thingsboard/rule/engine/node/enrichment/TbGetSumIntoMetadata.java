@@ -30,9 +30,6 @@ import java.util.Iterator;
 
 import static org.thingsboard.server.common.data.msg.TbNodeConnectionType.SUCCESS;
 
-/**
- * Created by mshvayka on 10.08.18.
- */
 @RuleNode(
         type = ComponentType.ENRICHMENT,
         name = "get sum into metadata",
@@ -40,20 +37,19 @@ import static org.thingsboard.server.common.data.msg.TbNodeConnectionType.SUCCES
         nodeDescription = "Calculate Sum of the telemetry data, which fields begin with the specified prefix and add the result into Message Metadata ",
         nodeDetails = "If fields in Message payload start with the <code>Input Key</code>, Sum of this fields added into metadata.",
         uiResources = {"static/rulenode/custom-nodes-config.js"},
-        configDirective = "tbEnrichmentNodeSumIntoMetadataConfig")
+        configDirective = "tbEnrichmentNodeSumIntoMetadataConfig"
+)
 public class TbGetSumIntoMetadata implements TbNode {
 
-    private TbGetSumIntoMetadataConfiguration config;
     private String inputKey;
     private String outputKey;
 
     @Override
     public void init(TbContext ctx, TbNodeConfiguration configuration) throws TbNodeException {
-        this.config = TbNodeUtils.convert(configuration, TbGetSumIntoMetadataConfiguration.class);
+        var config = TbNodeUtils.convert(configuration, TbGetSumIntoMetadataConfiguration.class);
         inputKey = config.getInputKey();
         outputKey = config.getOutputKey();
     }
-
 
     @Override
     public void onMsg(TbContext ctx, TbMsg msg) {
@@ -76,8 +72,4 @@ public class TbGetSumIntoMetadata implements TbNode {
         }
     }
 
-    @Override
-    public void destroy() {
-
-    }
 }

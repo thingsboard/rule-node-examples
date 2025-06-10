@@ -16,7 +16,6 @@
 package org.thingsboard.rule.engine.node.transform;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -27,14 +26,12 @@ import org.thingsboard.rule.engine.api.TbNodeException;
 import org.thingsboard.server.common.data.id.DeviceId;
 import org.thingsboard.server.common.msg.TbMsg;
 import org.thingsboard.server.common.msg.TbMsgMetaData;
-import org.thingsboard.server.common.msg.queue.TbMsgCallback;
 
 import java.util.Map;
 import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.BDDMockito.willReturn;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.spy;
@@ -42,9 +39,7 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.thingsboard.server.common.data.msg.TbMsgType.POST_ATTRIBUTES_REQUEST;
 
-@Slf4j
 class TbCalculateSumNodeTest {
-    public static final long NOW_TS = 1632831917545L; // Tue Sep 28 2021 15:25:17 GMT+0300
 
     final ObjectMapper mapper = new ObjectMapper();
 
@@ -53,17 +48,14 @@ class TbCalculateSumNodeTest {
     TbCalculateSumNodeConfiguration config;
     TbNodeConfiguration nodeConfiguration;
     TbContext ctx;
-    TbMsgCallback callback;
 
     @BeforeEach
     void setUp() throws TbNodeException {
         deviceId = new DeviceId(UUID.randomUUID());
-        callback = mock(TbMsgCallback.class);
         ctx = mock(TbContext.class);
         config = new TbCalculateSumNodeConfiguration().defaultConfiguration();
         nodeConfiguration = new TbNodeConfiguration(mapper.valueToTree(config));
         node = spy(new TbCalculateSumNode());
-        willReturn(NOW_TS).given(node).getNow(); //mocking current time
 
         node.init(ctx, nodeConfiguration);
     }
@@ -77,7 +69,6 @@ class TbCalculateSumNodeTest {
     void givenDefaultConfig_whenInit_thenOK() {
         assertThat(node.inputKey).isEqualTo("temperature");
         assertThat(node.outputKey).isEqualTo("TemperatureSum");
-        assertThat(node.config).isEqualTo(config);
     }
 
     @Test
@@ -88,7 +79,7 @@ class TbCalculateSumNodeTest {
     }
 
     @Test
-    void givenMsg_whenOnMsg_thenVerifyOutput() throws Exception {
+    void givenMsg_whenOnMsg_thenVerifyOutput() {
         final Map<String, String> mdMap = Map.of(
                 "country", "US",
                 "city", "NY"
@@ -97,7 +88,12 @@ class TbCalculateSumNodeTest {
         final String data = "{\"temperature1\":22.5,\"temperature2\":10.3}";
         final String expected = "{\"TemperatureSum\":32.8}";
 
-        TbMsg msg = TbMsg.newMsg(POST_ATTRIBUTES_REQUEST, deviceId, metaData, data, callback);
+        var msg = TbMsg.newMsg()
+                .type(POST_ATTRIBUTES_REQUEST)
+                .originator(deviceId)
+                .data(data)
+                .metaData(metaData)
+                .build();
 
         node.onMsg(ctx, msg);
 
@@ -108,7 +104,6 @@ class TbCalculateSumNodeTest {
         TbMsg newMsg = newMsgCaptor.getValue();
         assertThat(newMsg).isNotNull();
 
-        log.info("data: {}", newMsg);
         assertThat(newMsg.getInternalType()).isEqualTo(POST_ATTRIBUTES_REQUEST);
         assertThat(newMsg.getMetaData().getData()).isEqualTo(mdMap);
         assertThat(newMsg.getData()).isEqualTo(expected);
@@ -116,7 +111,12 @@ class TbCalculateSumNodeTest {
 
     @Test
     void givenEmptyMsg_whenOnMsg_thenTellFailure() {
-        TbMsg msg = TbMsg.newMsg(POST_ATTRIBUTES_REQUEST, deviceId, TbMsgMetaData.EMPTY, TbMsg.EMPTY_JSON_OBJECT, callback);
+        var msg = TbMsg.newMsg()
+                .type(POST_ATTRIBUTES_REQUEST)
+                .originator(deviceId)
+                .data(TbMsg.EMPTY_JSON_OBJECT)
+                .metaData(TbMsgMetaData.EMPTY)
+                .build();
 
         node.onMsg(ctx, msg);
 
@@ -127,7 +127,7 @@ class TbCalculateSumNodeTest {
 
         assertThat(newMsgCaptor.getValue()).isSameAs(msg);
         assertThat(exceptionCaptor.getValue()).isInstanceOf(TbNodeException.class);
-        assertThat(exceptionCaptor.getValue().getMessage()).startsWith("Message doesn't contains the key: ");
+        assertThat(exceptionCaptor.getValue().getMessage()).startsWith("Message doesn't contain the key: ");
         assertThat(exceptionCaptor.getValue().getMessage()).contains("temperature");
     }
 
