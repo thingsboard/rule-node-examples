@@ -16,7 +16,6 @@
 package org.thingsboard.rule.engine.node.transform;
 
 import com.fasterxml.jackson.databind.JsonNode;
-import lombok.extern.slf4j.Slf4j;
 import org.thingsboard.common.util.JacksonUtil;
 import org.thingsboard.rule.engine.api.RuleNode;
 import org.thingsboard.rule.engine.api.TbContext;
@@ -29,7 +28,6 @@ import org.thingsboard.server.common.msg.TbMsg;
 
 import java.util.Iterator;
 
-@Slf4j
 @RuleNode(
         type = ComponentType.TRANSFORMATION,
         name = "calculate sum",
@@ -37,16 +35,16 @@ import java.util.Iterator;
         nodeDescription = "Calculates Sum of the telemetry data, which fields begin with the specified prefix. ",
         nodeDetails = "If fields in Message payload start with the <code>Input Key</code>, the Sum of these fields is added to the new Message payload.",
         uiResources = {"static/rulenode/custom-nodes-config.js"},
-        configDirective = "tbTransformationNodeSumConfig")
+        configDirective = "tbTransformationNodeSumConfig"
+)
 public class TbCalculateSumNode implements TbNode {
 
-    TbCalculateSumNodeConfiguration config;
     String inputKey;
     String outputKey;
 
     @Override
     public void init(TbContext ctx, TbNodeConfiguration configuration) throws TbNodeException {
-        this.config = TbNodeUtils.convert(configuration, TbCalculateSumNodeConfiguration.class);
+        var config = TbNodeUtils.convert(configuration, TbCalculateSumNodeConfiguration.class);
         inputKey = config.getInputKey();
         outputKey = config.getOutputKey();
     }
@@ -66,18 +64,15 @@ public class TbCalculateSumNode implements TbNode {
         }
         if (hasRecords) {
             var newDataWithSum = JacksonUtil.newObjectNode();
-            TbMsg newMsg = TbMsg.transformMsgData(msg, JacksonUtil.toString(newDataWithSum.put(outputKey, sum)));
-            ctx.tellSuccess(newMsg);
+
+            TbMsg transformedMsg = msg.transform()
+                    .data(JacksonUtil.toString(newDataWithSum.put(outputKey, sum)))
+                    .build();
+
+            ctx.tellSuccess(transformedMsg);
         } else {
-            ctx.tellFailure(msg, new TbNodeException("Message doesn't contains the key: " + inputKey));
+            ctx.tellFailure(msg, new TbNodeException("Message doesn't contain the key: " + inputKey));
         }
     }
 
-    long getNow() {
-        return System.currentTimeMillis();
-    }
-
-    @Override
-    public void destroy() {
-    }
 }

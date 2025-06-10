@@ -15,7 +15,6 @@
  */
 package org.thingsboard.rule.engine.node.filter;
 
-import lombok.extern.slf4j.Slf4j;
 import org.thingsboard.common.util.JacksonUtil;
 import org.thingsboard.rule.engine.api.RuleNode;
 import org.thingsboard.rule.engine.api.TbContext;
@@ -27,8 +26,6 @@ import org.thingsboard.server.common.data.msg.TbNodeConnectionType;
 import org.thingsboard.server.common.data.plugin.ComponentType;
 import org.thingsboard.server.common.msg.TbMsg;
 
-
-@Slf4j
 @RuleNode(
         type = ComponentType.FILTER,
         name = "check key",
@@ -37,26 +34,21 @@ import org.thingsboard.server.common.msg.TbMsg;
         nodeDescription = "Checks the existence of the selected key in the message payload.",
         nodeDetails = "If the selected key  exists - send Message via <b>True</b> chain, otherwise <b>False</b> chain is used.",
         uiResources = {"static/rulenode/custom-nodes-config.js"},
-        configDirective = "tbFilterNodeCheckKeyConfig")
+        configDirective = "tbFilterNodeCheckKeyConfig"
+)
 public class TbKeyFilterNode implements TbNode {
 
-    private TbKeyFilterNodeConfiguration config;
     private String key;
-
 
     @Override
     public void init(TbContext tbContext, TbNodeConfiguration configuration) throws TbNodeException {
-        this.config = TbNodeUtils.convert(configuration, TbKeyFilterNodeConfiguration.class);
+        var config = TbNodeUtils.convert(configuration, TbKeyFilterNodeConfiguration.class);
         key = config.getKey();
     }
 
     @Override
     public void onMsg(TbContext ctx, TbMsg msg) {
-        ctx.tellNext(msg, JacksonUtil.toJsonNode(msg.getData()).has(key) ?
-                TbNodeConnectionType.TRUE : TbNodeConnectionType.FALSE);
+        ctx.tellNext(msg, JacksonUtil.toJsonNode(msg.getData()).has(key) ? TbNodeConnectionType.TRUE : TbNodeConnectionType.FALSE);
     }
 
-    @Override
-    public void destroy() {
-    }
 }
