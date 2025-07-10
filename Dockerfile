@@ -14,7 +14,7 @@
 # limitations under the License.
 #
 
-FROM thingsboard/tb-node:4.0.1
+FROM thingsboard/tb-node:4.1.0
 COPY target/rule-engine-1.0.0-custom-nodes.jar /usr/share/thingsboard/extensions/
 
 #USER root
