@@ -32,16 +32,13 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <main.dir>${basedir}</main.dir>
-        <thingsboard.version>4.1.0</thingsboard.version>
-        <lombok.version>1.18.32</lombok.version>
+        <thingsboard.version>4.2.0</thingsboard.version>
+        <lombok.version>1.18.38</lombok.version>
         <guava.version>33.1.0-jre</guava.version>
         <!--         TEST SCOPE         -->
-        <spring-boot-starter-test.version>3.2.12</spring-boot-starter-test.version>
-        <jupiter.version>5.10.5</jupiter.version> <!-- keep the same version as spring-boot-starter-test depend on jupiter-->
-        <awaitility.version>4.2.1</awaitility.version>
+        <spring-boot.version>3.4.8</spring-boot.version>
         <commons-io.version>2.16.1</commons-io.version>
-        <netty.version>4.1.119.Final</netty.version>
-        <spring-data-redis.version>3.2.12</spring-data-redis.version>
+        <netty.version>4.1.124.Final</netty.version>
         <protobuf.version>3.25.5</protobuf.version>
         <surefire.version>3.2.5</surefire.version>
     </properties>
@@ -93,25 +90,7 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
-            <version>${spring-boot-starter-test.version}</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.junit.vintage</groupId>
-            <artifactId>junit-vintage-engine</artifactId>
-            <version>${jupiter.version}</version>
-            <scope>test</scope>
-            <exclusions>
-                <exclusion>
-                    <groupId>org.hamcrest</groupId>
-                    <artifactId>hamcrest-core</artifactId>
-                </exclusion>
-            </exclusions>
-        </dependency>
-        <dependency>
-            <groupId>org.awaitility</groupId>
-            <artifactId>awaitility</artifactId>
-            <version>${awaitility.version}</version>
+            <version>${spring-boot.version}</version>
             <scope>test</scope>
         </dependency>
         <dependency>
@@ -123,13 +102,6 @@
         <dependency> <!-- for mocking io.netty.channel.EventLoopGroup -->
             <groupId>io.netty</groupId>
             <artifactId>netty-transport</artifactId>
-            <version>${netty.version}</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency> <!-- for mocking org.springframework.data.redis.core.RedisTemplate -->
-            <groupId>org.springframework.data</groupId>
-            <artifactId>spring-data-redis</artifactId>
-            <version>${spring-data-redis.version}</version>
             <scope>test</scope>
         </dependency>
         <dependency> <!-- for com.google.protobuf.InvalidProtocolBufferException inside TbMsg-->
@@ -139,6 +111,25 @@
             <scope>test</scope>
         </dependency>
     </dependencies>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-dependencies</artifactId>
+                <version>${spring-boot.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+            <dependency>
+                <groupId>io.netty</groupId>
+                <artifactId>netty-bom</artifactId>
+                <version>${netty.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
 
     <build>
         <pluginManagement>
@@ -188,52 +179,52 @@
                     </execution>
                 </executions>
             </plugin>
-                <plugin>
-                    <groupId>com.mycila</groupId>
-                    <artifactId>license-maven-plugin</artifactId>
-                    <version>3.0</version>
-                    <configuration>
-                        <header>${main.dir}/license-header-template.txt</header>
-                        <properties>
-                            <owner>The Thingsboard Authors</owner>
-                        </properties>
-                        <excludes>
-                            <exclude>**/.env</exclude>
-                            <exclude>**/.eslintrc</exclude>
-                            <exclude>**/.babelrc</exclude>
-                            <exclude>**/.jshintrc</exclude>
-                            <exclude>**/.gradle/**</exclude>
-                            <exclude>**/nightwatch</exclude>
-                            <exclude>**/README</exclude>
-                            <exclude>**/LICENSE</exclude>
-                            <exclude>**/banner.txt</exclude>
-                            <exclude>node_modules/**</exclude>
-                            <exclude>**/*.properties</exclude>
-                            <exclude>src/test/resources/**</exclude>
-                            <exclude>src/vendor/**</exclude>
-                            <exclude>src/font/**</exclude>
-                            <exclude>src/sh/**</exclude>
-                            <exclude>src/main/scripts/control/**</exclude>
-                            <exclude>src/main/scripts/windows/**</exclude>
-                            <exclude>src/main/resources/public/static/rulenode/**</exclude>
-                        </excludes>
-                        <mapping>
-                            <proto>JAVADOC_STYLE</proto>
-                            <cql>DOUBLEDASHES_STYLE</cql>
-                            <scss>JAVADOC_STYLE</scss>
-                            <jsx>SLASHSTAR_STYLE</jsx>
-                            <conf>SCRIPT_STYLE</conf>
-                            <gradle>JAVADOC_STYLE</gradle>
-                        </mapping>
-                    </configuration>
-                    <executions>
-                        <execution>
-                            <goals>
-                                <goal>check</goal>
-                            </goals>
-                        </execution>
-                    </executions>
-                </plugin>
+            <plugin>
+                <groupId>com.mycila</groupId>
+                <artifactId>license-maven-plugin</artifactId>
+                <version>3.0</version>
+                <configuration>
+                    <header>${main.dir}/license-header-template.txt</header>
+                    <properties>
+                        <owner>The Thingsboard Authors</owner>
+                    </properties>
+                    <excludes>
+                        <exclude>**/.env</exclude>
+                        <exclude>**/.eslintrc</exclude>
+                        <exclude>**/.babelrc</exclude>
+                        <exclude>**/.jshintrc</exclude>
+                        <exclude>**/.gradle/**</exclude>
+                        <exclude>**/nightwatch</exclude>
+                        <exclude>**/README</exclude>
+                        <exclude>**/LICENSE</exclude>
+                        <exclude>**/banner.txt</exclude>
+                        <exclude>node_modules/**</exclude>
+                        <exclude>**/*.properties</exclude>
+                        <exclude>src/test/resources/**</exclude>
+                        <exclude>src/vendor/**</exclude>
+                        <exclude>src/font/**</exclude>
+                        <exclude>src/sh/**</exclude>
+                        <exclude>src/main/scripts/control/**</exclude>
+                        <exclude>src/main/scripts/windows/**</exclude>
+                        <exclude>src/main/resources/public/static/rulenode/**</exclude>
+                    </excludes>
+                    <mapping>
+                        <proto>JAVADOC_STYLE</proto>
+                        <cql>DOUBLEDASHES_STYLE</cql>
+                        <scss>JAVADOC_STYLE</scss>
+                        <jsx>SLASHSTAR_STYLE</jsx>
+                        <conf>SCRIPT_STYLE</conf>
+                        <gradle>JAVADOC_STYLE</gradle>
+                    </mapping>
+                </configuration>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>check</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
         </plugins>
     </build>
 

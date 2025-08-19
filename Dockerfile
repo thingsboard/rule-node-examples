@@ -14,13 +14,5 @@
 # limitations under the License.
 #
 
-FROM thingsboard/tb-node:4.1.0
+FROM thingsboard/tb-node:4.2.0
 COPY target/rule-engine-1.0.0-custom-nodes.jar /usr/share/thingsboard/extensions/
-
-#USER root
-#
-#RUN apt-get update && apt-get install -y \
-#    htop curl wget net-tools iputils-ping traceroute \
-#    && rm -rf /var/lib/apt/lists/*
-#
-#USER thingsboard
