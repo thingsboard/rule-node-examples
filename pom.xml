@@ -32,13 +32,13 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <main.dir>${basedir}</main.dir>
-        <thingsboard.version>4.2.0</thingsboard.version>
+        <thingsboard.version>4.2.1</thingsboard.version>
         <lombok.version>1.18.38</lombok.version>
         <guava.version>33.1.0-jre</guava.version>
         <!--         TEST SCOPE         -->
-        <spring-boot.version>3.4.8</spring-boot.version>
+        <spring-boot.version>3.4.10</spring-boot.version>
         <commons-io.version>2.16.1</commons-io.version>
-        <netty.version>4.1.124.Final</netty.version>
+        <netty.version>4.1.125.Final</netty.version>
         <protobuf.version>3.25.5</protobuf.version>
         <surefire.version>3.2.5</surefire.version>
     </properties>
@@ -104,7 +104,7 @@
             <artifactId>netty-transport</artifactId>
             <scope>test</scope>
         </dependency>
-        <dependency> <!-- for com.google.protobuf.InvalidProtocolBufferException inside TbMsg-->
+        <dependency> <!-- for com.google.protobuf.InvalidProtocolBufferException inside TbMsg -->
             <groupId>com.google.protobuf</groupId>
             <artifactId>protobuf-java</artifactId>
             <version>${protobuf.version}</version>
