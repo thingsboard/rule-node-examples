@@ -32,7 +32,7 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <main.dir>${basedir}</main.dir>
-        <thingsboard.version>4.2.1.1</thingsboard.version>
+        <thingsboard.version>4.3.0</thingsboard.version>
         <lombok.version>1.18.38</lombok.version>
         <guava.version>33.1.0-jre</guava.version>
         <!--         TEST SCOPE         -->
@@ -41,6 +41,7 @@
         <netty.version>4.1.128.Final</netty.version>
         <protobuf.version>3.25.5</protobuf.version>
         <surefire.version>3.2.5</surefire.version>
+        <commons-lang3.version>3.18.0</commons-lang3.version>
     </properties>
 
     <dependencies>
@@ -110,21 +111,27 @@
             <version>${protobuf.version}</version>
             <scope>test</scope>
         </dependency>
+        <dependency> <!-- for org.apache.commons.lang3.Strings inside EntityType -->
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-lang3</artifactId>
+            <version>${commons-lang3.version}</version>
+            <scope>test</scope>
+        </dependency>
     </dependencies>
 
     <dependencyManagement>
         <dependencies>
             <dependency>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-dependencies</artifactId>
-                <version>${spring-boot.version}</version>
+                <groupId>io.netty</groupId>
+                <artifactId>netty-bom</artifactId>
+                <version>${netty.version}</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
             <dependency>
-                <groupId>io.netty</groupId>
-                <artifactId>netty-bom</artifactId>
-                <version>${netty.version}</version>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-dependencies</artifactId>
+                <version>${spring-boot.version}</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
