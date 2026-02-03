@@ -32,7 +32,7 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <main.dir>${basedir}</main.dir>
-        <thingsboard.version>4.3.0</thingsboard.version>
+        <thingsboard.version>4.3.0.1</thingsboard.version>
         <lombok.version>1.18.38</lombok.version>
         <guava.version>33.1.0-jre</guava.version>
         <spring-boot.version>3.4.10</spring-boot.version>
@@ -113,7 +113,6 @@
         <dependency> <!-- for org.apache.commons.lang3.Strings inside EntityType -->
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-lang3</artifactId>
-            <version>${commons-lang3.version}</version>
             <scope>test</scope>
         </dependency>
     </dependencies>
@@ -163,6 +162,11 @@
                 <groupId>com.google.j2objc</groupId>
                 <artifactId>j2objc-annotations</artifactId>
                 <version>${j2objc-annotations.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.commons</groupId>
+                <artifactId>commons-lang3</artifactId>
+                <version>${commons-lang3.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
