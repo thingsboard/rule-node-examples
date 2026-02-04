@@ -32,16 +32,18 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <main.dir>${basedir}</main.dir>
-        <thingsboard.version>4.3.0</thingsboard.version>
+        <thingsboard.version>4.3.0.1</thingsboard.version>
         <lombok.version>1.18.38</lombok.version>
         <guava.version>33.1.0-jre</guava.version>
-        <!--         TEST SCOPE         -->
         <spring-boot.version>3.4.10</spring-boot.version>
         <commons-io.version>2.16.1</commons-io.version>
         <netty.version>4.1.128.Final</netty.version>
-        <protobuf.version>3.25.5</protobuf.version>
-        <surefire.version>3.2.5</surefire.version>
+        <protobuf-java.version>3.25.5</protobuf-java.version>
+        <error_prone_annotations.version>2.38.0</error_prone_annotations.version>
+        <checker-qual.version>3.49.3</checker-qual.version>
+        <j2objc-annotations.version>3.0.0</j2objc-annotations.version>
         <commons-lang3.version>3.18.0</commons-lang3.version>
+        <surefire.version>3.5.4</surefire.version>
     </properties>
 
     <dependencies>
@@ -85,7 +87,6 @@
             <groupId>com.google.guava</groupId>
             <artifactId>guava</artifactId>
             <scope>provided</scope>
-            <version>${guava.version}</version>
         </dependency>
         <!--         TEST SCOPE         -->
         <dependency>
@@ -97,7 +98,6 @@
         <dependency>
             <groupId>commons-io</groupId>
             <artifactId>commons-io</artifactId>
-            <version>${commons-io.version}</version>
             <scope>test</scope>
         </dependency>
         <dependency> <!-- for mocking io.netty.channel.EventLoopGroup -->
@@ -108,13 +108,11 @@
         <dependency> <!-- for com.google.protobuf.InvalidProtocolBufferException inside TbMsg -->
             <groupId>com.google.protobuf</groupId>
             <artifactId>protobuf-java</artifactId>
-            <version>${protobuf.version}</version>
             <scope>test</scope>
         </dependency>
         <dependency> <!-- for org.apache.commons.lang3.Strings inside EntityType -->
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-lang3</artifactId>
-            <version>${commons-lang3.version}</version>
             <scope>test</scope>
         </dependency>
     </dependencies>
@@ -134,6 +132,41 @@
                 <version>${spring-boot.version}</version>
                 <type>pom</type>
                 <scope>import</scope>
+            </dependency>
+            <dependency>
+                <groupId>com.google.protobuf</groupId>
+                <artifactId>protobuf-java</artifactId>
+                <version>${protobuf-java.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.google.guava</groupId>
+                <artifactId>guava</artifactId>
+                <version>${guava.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>commons-io</groupId>
+                <artifactId>commons-io</artifactId>
+                <version>${commons-io.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.google.errorprone</groupId>
+                <artifactId>error_prone_annotations</artifactId>
+                <version>${error_prone_annotations.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.checkerframework</groupId>
+                <artifactId>checker-qual</artifactId>
+                <version>${checker-qual.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.google.j2objc</groupId>
+                <artifactId>j2objc-annotations</artifactId>
+                <version>${j2objc-annotations.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.commons</groupId>
+                <artifactId>commons-lang3</artifactId>
+                <version>${commons-lang3.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
