@@ -32,7 +32,7 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <main.dir>${basedir}</main.dir>
-        <thingsboard.version>4.4.0-SNAPSHOT</thingsboard.version>
+        <thingsboard.version>4.4.0</thingsboard.version>
         <lombok.version>1.18.40</lombok.version>
         <maven.compiler.source>25</maven.compiler.source>
         <maven.compiler.target>25</maven.compiler.target>
