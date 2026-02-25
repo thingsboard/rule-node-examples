@@ -32,8 +32,10 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <main.dir>${basedir}</main.dir>
-        <thingsboard.version>4.3.0.1</thingsboard.version>
-        <lombok.version>1.18.38</lombok.version>
+        <thingsboard.version>4.4.0</thingsboard.version>
+        <lombok.version>1.18.40</lombok.version>
+        <maven.compiler.source>25</maven.compiler.source>
+        <maven.compiler.target>25</maven.compiler.target>
         <guava.version>33.1.0-jre</guava.version>
         <spring-boot.version>3.4.10</spring-boot.version>
         <commons-io.version>2.16.1</commons-io.version>
@@ -43,6 +45,7 @@
         <checker-qual.version>3.49.3</checker-qual.version>
         <j2objc-annotations.version>3.0.0</j2objc-annotations.version>
         <commons-lang3.version>3.18.0</commons-lang3.version>
+        <bytebuddy.version>1.18.4</bytebuddy.version>
         <surefire.version>3.5.4</surefire.version>
     </properties>
 
@@ -168,6 +171,16 @@
                 <artifactId>commons-lang3</artifactId>
                 <version>${commons-lang3.version}</version>
             </dependency>
+            <dependency>
+                <groupId>net.bytebuddy</groupId>
+                <artifactId>byte-buddy</artifactId>
+                <version>${bytebuddy.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>net.bytebuddy</groupId>
+                <artifactId>byte-buddy-agent</artifactId>
+                <version>${bytebuddy.version}</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 
@@ -177,9 +190,9 @@
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-compiler-plugin</artifactId>
-                    <version>3.11.0</version>
+                    <version>3.13.0</version>
                     <configuration>
-                        <release>17</release>
+                        <release>25</release>
                         <compilerArgs>
                             <arg>-Xlint:deprecation</arg>
                             <arg>-Xlint:removal</arg>
@@ -198,6 +211,12 @@
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-surefire-plugin</artifactId>
                     <version>${surefire.version}</version>
+                    <configuration>
+                        <argLine>
+                            -XX:+EnableDynamicAgentLoading
+                            --add-opens=java.base/java.lang.reflect=ALL-UNNAMED
+                        </argLine>
+                    </configuration>
                 </plugin>
             </plugins>
         </pluginManagement>
