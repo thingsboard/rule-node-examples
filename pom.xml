@@ -32,10 +32,10 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <main.dir>${basedir}</main.dir>
-        <thingsboard.version>4.3.1</thingsboard.version>
-        <lombok.version>1.18.38</lombok.version>
+        <thingsboard.version>4.3.1.1</thingsboard.version>
+        <lombok.version>1.18.44</lombok.version>
         <guava.version>33.1.0-jre</guava.version>
-        <spring-boot.version>3.4.13</spring-boot.version>
+        <spring-boot.version>3.5.12</spring-boot.version>
         <commons-io.version>2.16.1</commons-io.version>
         <protobuf-java.version>3.25.5</protobuf-java.version>
         <error_prone_annotations.version>2.38.0</error_prone_annotations.version>
