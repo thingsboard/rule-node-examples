@@ -32,12 +32,11 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <main.dir>${basedir}</main.dir>
-        <thingsboard.version>4.2.1.2</thingsboard.version>
+        <thingsboard.version>4.2.2</thingsboard.version>
         <lombok.version>1.18.38</lombok.version>
         <guava.version>33.1.0-jre</guava.version>
-        <spring-boot.version>3.4.10</spring-boot.version>
+        <spring-boot.version>3.4.13</spring-boot.version>
         <commons-io.version>2.16.1</commons-io.version>
-        <netty.version>4.1.128.Final</netty.version>
         <protobuf-java.version>3.25.5</protobuf-java.version>
         <error_prone_annotations.version>2.38.0</error_prone_annotations.version>
         <checker-qual.version>3.49.3</checker-qual.version>
@@ -113,13 +112,6 @@
 
     <dependencyManagement>
         <dependencies>
-            <dependency>
-                <groupId>io.netty</groupId>
-                <artifactId>netty-bom</artifactId>
-                <version>${netty.version}</version>
-                <type>pom</type>
-                <scope>import</scope>
-            </dependency>
             <dependency>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-dependencies</artifactId>
