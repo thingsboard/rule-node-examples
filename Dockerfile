@@ -1,11 +1,11 @@
 #
-# Copyright © 2018-2026 The Thingsboard Authors
+# Copyright 2018 ThingsBoard, Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
 #
-#     http://www.apache.org/licenses/LICENSE-2.0
+#     https://www.apache.org/licenses/LICENSE-2.0
 #
 # Unless required by applicable law or agreed to in writing, software
 # distributed under the License is distributed on an "AS IS" BASIS,
@@ -14,5 +14,5 @@
 # limitations under the License.
 #
 
-FROM thingsboard/tb-node:4.2.2.2
+FROM thingsboard/tb-node:4.2.2.8
 COPY target/rule-engine-1.0.0-custom-nodes.jar /usr/share/thingsboard/extensions/
