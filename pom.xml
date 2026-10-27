@@ -31,8 +31,8 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <thingsboard.version>4.3.1.8</thingsboard.version>
-        <j2objc-annotations.version>3.1</j2objc-annotations.version>
+        <thingsboard.version>4.4.0.1</thingsboard.version>
+        <j2objc-annotations.version>3.0.0</j2objc-annotations.version>
 
         <!-- BUILD PLUGINS -->
         <maven-compiler-plugin.version>3.15.0</maven-compiler-plugin.version>
@@ -124,10 +124,8 @@
                                     <excludedScopes/>
                                     <excludes>
                                         <exclude>com.google.errorprone:error_prone_annotations</exclude>
-                                        <exclude>net.bytebuddy:byte-buddy</exclude>
                                         <exclude>org.jetbrains.kotlin:kotlin-reflect</exclude>
                                         <exclude>org.jetbrains.kotlin:kotlin-stdlib</exclude>
-                                        <exclude>org.jspecify:jspecify</exclude>
                                         <exclude>org.springframework.boot:spring-boot-test</exclude>
                                         <exclude>org.springframework.boot:spring-boot-test-autoconfigure</exclude>
                                         <exclude>org.yaml:snakeyaml</exclude>
@@ -180,7 +178,7 @@
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>${maven-compiler-plugin.version}</version>
                 <configuration>
-                    <release>17</release>
+                    <release>25</release>
                     <compilerArgs>
                         <arg>-Xlint:deprecation</arg>
                         <arg>-Xlint:removal</arg>
@@ -199,6 +197,9 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
                 <version>${maven-surefire-plugin.version}</version>
+                <configuration>
+                    <argLine>-XX:+EnableDynamicAgentLoading</argLine>
+                </configuration>
             </plugin>
             <plugin>
                 <artifactId>maven-assembly-plugin</artifactId>
