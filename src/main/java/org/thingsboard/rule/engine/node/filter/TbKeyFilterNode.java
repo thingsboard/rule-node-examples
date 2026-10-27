@@ -16,8 +16,6 @@ import org.thingsboard.server.common.data.plugin.ComponentType;
 import org.thingsboard.server.common.data.util.TbPair;
 import org.thingsboard.server.common.msg.TbMsg;
 
-import java.util.Objects;
-
 @RuleNode(
         type = ComponentType.FILTER,
         name = "check key",
@@ -40,7 +38,10 @@ public class TbKeyFilterNode implements TbNode {
     public void init(TbContext tbContext, TbNodeConfiguration configuration) throws TbNodeException {
         var config = TbNodeUtils.convert(configuration, TbKeyFilterNodeConfiguration.class);
         key = config.getKey();
-        filterSource = Objects.requireNonNullElse(config.getFilterSource(), FilterSource.DATA);
+        filterSource = config.getFilterSource();
+        if (filterSource == null) {
+            throw new TbNodeException("Filter source must be specified!", true);
+        }
     }
 
     @Override
