@@ -21,6 +21,7 @@ import java.util.Map;
 import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
@@ -56,20 +57,10 @@ class TbKeyFilterNodeTest {
     }
 
     @Test
-    void givenConfigVersion0_whenInit_thenFiltersByData() throws TbNodeException {
-        node.init(ctx, new TbNodeConfiguration(JacksonUtil.toJsonNode("{\"key\":\"temperature\"}")));
-
-        var msg = TbMsg.newMsg()
-                .type(POST_TELEMETRY_REQUEST)
-                .originator(deviceId)
-                .data("{\"temperature\":22.5}")
-                .metaData(TbMsgMetaData.EMPTY)
-                .build();
-
-        node.onMsg(ctx, msg);
-
-        verify(ctx).tellNext(msg, "True");
-        verify(ctx, never()).tellFailure(any(), any());
+    void givenConfigWithoutFilterSource_whenInit_thenThrowsException() {
+        assertThatThrownBy(() -> node.init(ctx, new TbNodeConfiguration(JacksonUtil.toJsonNode("{\"key\":\"temperature\"}"))))
+                .isInstanceOf(TbNodeException.class)
+                .hasMessage("Filter source must be specified!");
     }
 
     @ParameterizedTest
