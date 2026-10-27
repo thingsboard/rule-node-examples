@@ -9,11 +9,13 @@ import org.thingsboard.rule.engine.api.NodeConfiguration;
 public class TbKeyFilterNodeConfiguration implements NodeConfiguration<TbKeyFilterNodeConfiguration> {
 
     private String key;
+    private FilterSource filterSource;
 
     @Override
     public TbKeyFilterNodeConfiguration defaultConfiguration() {
         var configuration = new TbKeyFilterNodeConfiguration();
         configuration.setKey(null);
+        configuration.setFilterSource(FilterSource.DATA);
         return configuration;
     }
 
