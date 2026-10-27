@@ -135,7 +135,7 @@
                     <defaultUseDefaultExcludes>false</defaultUseDefaultExcludes>
                     <licenseSets>
                         <licenseSet>
-                            <header>license-header-template.txt</header>
+                            <header>header-template.txt</header>
                             <excludes>
                                 <exclude>**/target/**</exclude>
                                 <exclude>**/.git/**</exclude>
