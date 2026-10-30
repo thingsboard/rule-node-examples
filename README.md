@@ -16,7 +16,7 @@ Each release branch targets one ThingsBoard release line and is kept on its late
 
 `master` follows the latest release line, currently 4.4.
 
-This branch builds against ThingsBoard 4.4.0.1. The version is set by the `thingsboard.version` property in `pom.xml`. All dependency versions come from the ThingsBoard BOM, so the project uses the same libraries as ThingsBoard itself.
+This branch builds against ThingsBoard 4.4.0.2. The version is set by the `thingsboard.version` property in `pom.xml`. All dependency versions come from the ThingsBoard BOM, so the project uses the same libraries as ThingsBoard itself.
 
 ## Example nodes
 
@@ -71,7 +71,7 @@ sudo service thingsboard restart
 The `Dockerfile` adds the JAR to the official `thingsboard/tb-node` image of the matching version:
 
 ```bash
-docker build . -t your_repo/tb-node:4.4.0.1-custom-1
+docker build . -t your_repo/tb-node:4.4.0.2-custom-1
 ```
 
 Use this image instead of `thingsboard/tb-node` in your deployment.
