@@ -20,7 +20,7 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <thingsboard.version>4.4.0.1</thingsboard.version>
+        <thingsboard.version>4.4.0.2</thingsboard.version>
         <j2objc-annotations.version>3.0.0</j2objc-annotations.version>
 
         <!-- BUILD PLUGINS -->
