@@ -20,7 +20,7 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <thingsboard.version>4.2.2.8</thingsboard.version>
+        <thingsboard.version>4.2.2.9</thingsboard.version>
         <j2objc-annotations.version>3.1</j2objc-annotations.version>
 
         <!-- BUILD PLUGINS -->
@@ -116,7 +116,6 @@
                                         <exclude>net.bytebuddy:byte-buddy</exclude>
                                         <exclude>org.jetbrains.kotlin:kotlin-reflect</exclude>
                                         <exclude>org.jetbrains.kotlin:kotlin-stdlib</exclude>
-                                        <exclude>org.jspecify:jspecify</exclude>
                                         <exclude>org.springframework.boot:spring-boot-test</exclude>
                                         <exclude>org.springframework.boot:spring-boot-test-autoconfigure</exclude>
                                         <exclude>org.yaml:snakeyaml</exclude>
